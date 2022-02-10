@@ -5,8 +5,10 @@ import Download from "./components/Download/Download";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Switch, Route } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <div className="App">
       <ToastContainer
@@ -21,10 +23,16 @@ function App() {
         pauseOnHover
       />
       <ToastContainer />
+
+      <div className={isLoading ? "" : "d-none"} id="overlay"></div>
       <Navbar></Navbar>
       <Switch>
         <Route path="/download" component={Download} />
-        <Route path="/" exact component={Inputs} />
+        <Route
+          path="/"
+          exact
+          render={(props) => <Inputs setIsLoading={setIsLoading} {...props} />}
+        />
       </Switch>
     </div>
   );

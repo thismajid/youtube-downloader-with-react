@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { download } from "../../services/downloadService";
 
-const Inputs = ({ history }) => {
+const Inputs = ({ setIsLoading, history }) => {
   const [url, setUrl] = useState("");
   const notify = (err) =>
     toast.error(err, {
@@ -25,8 +25,10 @@ const Inputs = ({ history }) => {
         "i"
       );
       if (ytRegex.test(url)) {
+        setIsLoading(true);
         const { data } = await download(url);
         if (data) {
+          setIsLoading(false);
           history.push({
             pathname: "/download",
             state: { data },
@@ -36,6 +38,7 @@ const Inputs = ({ history }) => {
         notify("URL is wrong ...");
       }
     } catch (err) {
+      console.log(err);
       notify("Something went wrong ...");
     }
   };

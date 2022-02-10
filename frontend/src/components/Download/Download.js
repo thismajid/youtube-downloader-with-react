@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 const Download = ({ history }) => {
   const { data } = history.location.state;
-  console.log(data);
   return (
     <div className="mt-3">
       <div className="container d-flex justify-content-center">
