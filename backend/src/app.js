@@ -1,12 +1,22 @@
 import createError from "http-errors";
 import express from "express";
-import path from "path";
 import routers from "./routes";
+import cors from "cors";
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, "../public")));
-app.use("/api", routers);
+var whitelist = ["http://localhost:3000"];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+app.use("/api", cors(corsOptions), routers);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
